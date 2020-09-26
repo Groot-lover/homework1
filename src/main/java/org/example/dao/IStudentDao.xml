@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.IStudentDao">
+
+    <!--
+        1.parameterType可以省略，如果不省略就必须写正确
+        2.传入的参数是一个对象，#{对象的属性名}，默认调用对象属性的get方法
+    -->
+    <insert id="insertStu">
+        insert into student (name,gender,age,score) values (#{name},#{gender},#{age},#{score})
+    </insert>
+
+    <delete id="deleteStudentById">
+        delete from student where id = #{id}
+    </delete>
+
+    <update id="updateStudent">
+        update student set name=#{name},gender=#{gender},age=#{age},score=#{score} where id=#{id}
+    </update>
+
+    <insert id="insertStudentCatchId">
+        insert into student (name,age,score) values (#{name},#{age},#{score})
+        <selectKey keyColumn="id" keyProperty="id" resultType="int" order="AFTER">
+            <!--select @@identity-->
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <!--
+        resultType或者resultMap是必须的，并不是集合的类型，而是集合中单个元素的类型
+    -->
+    <select id="selectAllStudent" resultType="Student">
+        select id,name,gender,age,score from student
+    </select>
+    <select id="selectStudent" resultType="Student">
+        select id,name,gender,age,score from student where 1=1
+        /*动态构造查询语句*/
+        <if test="name!=null and name!=''">
+            and name like '%' #{name} '%'
+        </if>
+        <if test="score!=0">
+            and score > #{score}
+        </if>
+        <if test="age!=0">
+            and age > #{age}
+        </if>
+        <if test="gender!=null and gender!=''">
+            and gender = #{gender}
+        </if>
+
+    </select>
+
+    <select id="selectStudentById" resultType="Student">
+        select id,name,age,score from student where id = #{id}
+    </select>
+
+    <select id="selectStudentByName" resultType="Student">
+        <!--select id,name,age,score from student where name like '%' #{name} '%'-->
+        <!--select id,name,age,score from student where name like concat('%',#{name},'%')-->
+        select id,name,age,score from student where name like '%${value}%'
+    </select>
+</mapper>
