@@ -2,11 +2,21 @@ package org.example;
 
 import static org.junit.Assert.assertTrue;
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.example.dao.IStudentDao;
+import org.example.dao.MybatiesDao01;
 import org.example.dao.StudentDaoImpl;
+import org.example.domain.Dept;
+import org.example.domain.Emp;
 import org.example.domain.Student;
+import org.example.utils.MyBatisUtil;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -61,5 +71,23 @@ public class AppTest
         student.setId(4);
         studentDao.updateStudent(student);
         System.out.println("okk");
+    }
+    @Test//查
+    public void test05() throws IOException {
+        InputStream iStream = Resources.getResourceAsStream("mybatis.xml");
+        SqlSessionFactory sqlSessionFactory=new SqlSessionFactoryBuilder().build(iStream);
+        SqlSession sqlSession=sqlSessionFactory.openSession(true);
+        MybatiesDao01 mybatiesDao01=sqlSession.getMapper(MybatiesDao01.class);
+        List<Dept> list=mybatiesDao01.selectById("1");
+        System.out.println(list);
+    }
+    @Test//查
+    public void test06() throws IOException {
+        InputStream iStream = Resources.getResourceAsStream("mybatis.xml");
+        SqlSessionFactory sqlSessionFactory=new SqlSessionFactoryBuilder().build(iStream);
+        SqlSession sqlSession=sqlSessionFactory.openSession(true);
+        MybatiesDao01 mybatiesDao01=sqlSession.getMapper(MybatiesDao01.class);
+        List<Emp> list=mybatiesDao01.selectMore();
+        System.out.println(list);
     }
 }

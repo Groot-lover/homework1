@@ -8,7 +8,7 @@
 	</appenders>
 	
 	<loggers>
-		<logger name="org.example.dao.IStudentDao" level="trace" additivity="false">
+		<logger name="org.example.dao.MybatiesDao01" level="trace" additivity="false">
 			<appender-ref ref="myConsole" />
 		</logger>
 		<!--<root level="debug">

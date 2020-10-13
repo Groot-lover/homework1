@@ -55,6 +55,7 @@
             4.(可以不满足)使用动态mapper
         -->
         <package name="org.example.dao"/>
-
+        <package name="org.example.dao.MybatiesDao01"/>
+<!--        <mapper resource="org/example/dao/MybatiesDao01.xml"></mapper>-->
     </mappers>
 </configuration>
