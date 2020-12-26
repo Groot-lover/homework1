@@ -2,92 +2,54 @@ package org.example;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.example.dao.IStudentDao;
-import org.example.dao.MybatiesDao01;
-import org.example.dao.StudentDaoImpl;
-import org.example.domain.Dept;
-import org.example.domain.Emp;
 import org.example.domain.Student;
-import org.example.utils.MyBatisUtil;
+import org.example.service.IStudentService;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-{
-    /**
-     * Rigorous Test :-)
-     */
-    @Test//增
-    public void test01()
-    {
-        IStudentDao studentDao = new StudentDaoImpl();
-        Student student = new Student("小明","男",20,98.5);
-        studentDao.insertStudent(student);
-        System.out.println("okk");
-    }
-    @Test//删
-    public void test02()
-    {
-        IStudentDao studentDao = new StudentDaoImpl();
-        studentDao.deleteStudentById(1);
-        System.out.println("okk");
-    }
-    @Test//查
-    public void test03()
-    {
-        IStudentDao studentDao = new StudentDaoImpl();
-        List<Student> studentList=studentDao.selectAllStudent();
-        for (Student s:studentList) {
-            System.out.println(s);
+public class AppTest {
+//    增加数据；
+    @Test
+    public void Test01(){
+        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        IStudentService studentService=(IStudentService)ac.getBean("IStudentService");
+        Student student=new Student("qwe","famale",19,99);
+        int num=studentService.insertStudent(student);
+        if (num>0){
+            System.out.println("成功增加数据");
+        }else {
+            System.out.println("出错");
         }
-        System.out.println("okk");
     }
-    @Test//查-多条件
-    public void test0301()
-    {
-        IStudentDao studentDao = new StudentDaoImpl();
-        Student student=new Student("","男",0,0);
-        List<Student> studentList=studentDao.selectStudent(student);
-        for (Student s:studentList) {
-            System.out.println(s);
+    //    增加数据；
+    @Test
+    public void Test02(){
+        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        IStudentService studentService=(IStudentService)ac.getBean("IStudentService");
+        int num=studentService.deleteStudentById(6);
+        if (num>0){
+            System.out.println("成功");
+        }else {
+            System.out.println("出错");
         }
-        System.out.println("okk");
     }
-    @Test//改
-    public void test04()
-    {
-        IStudentDao studentDao = new StudentDaoImpl();
-        Student student = new Student("小","男",18,88);
-        student.setId(4);
-        studentDao.updateStudent(student);
-        System.out.println("okk");
+    //    更改数据；
+    @Test
+    public void Test03(){
+        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        IStudentService studentService=(IStudentService)ac.getBean("IStudentService");
+        Student student=new Student(5,"qwe2","famale",19,99);
+        int num=studentService.updateStudent(student);
+        if (num>0){
+            System.out.println("成功");
+        }else {
+            System.out.println("出错");
+        }
     }
-    @Test//查
-    public void test05() throws IOException {
-        InputStream iStream = Resources.getResourceAsStream("mybatis.xml");
-        SqlSessionFactory sqlSessionFactory=new SqlSessionFactoryBuilder().build(iStream);
-        SqlSession sqlSession=sqlSessionFactory.openSession(true);
-        MybatiesDao01 mybatiesDao01=sqlSession.getMapper(MybatiesDao01.class);
-        List<Dept> list=mybatiesDao01.selectById("1");
-        System.out.println(list);
-    }
-    @Test//查
-    public void test06() throws IOException {
-        InputStream iStream = Resources.getResourceAsStream("mybatis.xml");
-        SqlSessionFactory sqlSessionFactory=new SqlSessionFactoryBuilder().build(iStream);
-        SqlSession sqlSession=sqlSessionFactory.openSession(true);
-        MybatiesDao01 mybatiesDao01=sqlSession.getMapper(MybatiesDao01.class);
-        List<Emp> list=mybatiesDao01.selectMore();
-        System.out.println(list);
-    }
+
 }

@@ -16,6 +16,13 @@ public class Student {
         this.age = age;
         this.score = score;
     }
+    public Student(Integer id,String name, String gender, int age, double score) {
+        this.id=id;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.score = score;
+    }
 
     @Override
     public String toString() {

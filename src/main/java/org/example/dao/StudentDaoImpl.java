@@ -1,11 +1,9 @@
 package org.example.dao;
 
 
-import org.apache.ibatis.session.SqlSession;
 import org.example.domain.Student;
-import org.example.utils.MyBatisUtil;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -14,163 +12,50 @@ import java.util.List;
 * 2.SqlSessionFactory
 * 3.SqlSession
 * */
-public class StudentDaoImpl implements IStudentDao {
-    //插入学生信息
+public class StudentDaoImpl extends JdbcDaoSupport implements IStudentDao {
+
     @Override
-    public void insertStudent(Student student) {
-        SqlSession session = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行插入命令
-            session.insert("insertStu",student);
-            //3.提交
-            session.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //4.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
+    public Integer insertStudent(Student student) {
+        String sql="insert into student(name,gender,age,score) value (?,?,?,?)";
+        return this.getJdbcTemplate().update(sql,
+                student.getName(),student.getGender(),student.getAge(),student.getScore());
     }
-    //删除学生信息按id
+
     @Override
-    public void deleteStudentById(int id) {
-        SqlSession session = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行删除命令
-            session.delete("deleteStudentById",id);
-            //3.提交
-            session.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //4.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
+    public int deleteStudentById(int id) {
+        String sql="delete from student where id=?";
+        return this.getJdbcTemplate().update(sql,id);
     }
-    //修改学生信息按id
+
     @Override
-    public void updateStudent(Student student) {
-        SqlSession session = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行修改命令
-            session.update("updateStudent",student);
-            //3.提交
-            session.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //4.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
+    public int updateStudent(Student student) {
+        String sql="update student set name =?,gender=?,age=?,score=? where id=?";
+        return this.getJdbcTemplate().update(sql,
+                student.getName(),student.getGender(),student.getAge(),student.getScore(),student.getId());
     }
-    //获取最新插入学生的id
+
     @Override
     public void insertStudentCatchId(Student student) {
-        SqlSession session = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行插入获取id的命令
-            session.insert("insertStudentCatchId",student);
-            //3.提交
-            session.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //4.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
+
     }
 
     @Override
     public List<Student> selectAllStudent() {
-        SqlSession session = null;
-        List<Student> students = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行查询命令
-            students = session.selectList("selectAllStudent");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //3.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
-        return students;
+        return null;
     }
-    //多条件
+
+    @Override
     public List<Student> selectStudent(Student student) {
-        SqlSession session = null;
-        List<Student> students = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行查询命令
-            students = session.selectList("selectStudent",student);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //3.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
-        return students;
+        return null;
     }
+
     @Override
     public Student selectStudentById(int id) {
-        SqlSession session = null;
-        Student student = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行查询命令
-            student = session.selectOne("selectStudentById",id);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //3.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
-        return student;
+        return null;
     }
 
     @Override
     public List<Student> selectStudentByName(String name) {
-        SqlSession session = null;
-        List<Student> students = null;
-        try {
-            //1.通过工具类获取SqlSession对象
-            session = MyBatisUtil.getSqlSession();
-            //2.执行查询命令
-            students = session.selectList("selectStudentByName",name);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //3.关闭SqlSession
-            if (session != null){
-                session.close();
-            }
-        }
-        return students;
+        return null;
     }
 }

@@ -7,11 +7,11 @@ import org.example.domain.Student;
 import java.util.List;
 
 public interface IStudentDao {
-    void insertStudent(Student student);//增
+    Integer insertStudent(Student student);//增
 
-    void deleteStudentById(int id);//删
+    int deleteStudentById(int id);//删
 
-    void updateStudent(Student student);//改
+    int updateStudent(Student student);//改
 
     void insertStudentCatchId(Student student);
 
